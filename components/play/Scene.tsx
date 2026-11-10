@@ -389,7 +389,6 @@ const AVATAR = {
   hair: "#211a16",
   jacket: "#e8e1d2",
   tee: "#1f2023",
-  chain: "#c9c6bf",
   pants: "#2e3036",
   shoes: "#e6e1d8",
 };
@@ -503,14 +502,10 @@ function ChairAndMe() {
             <RoundedBox args={[0.38, 0.5, 0.22]} radius={0.08} position={[0, 0.82, 0.05]} castShadow>
               <meshStandardMaterial color={AVATAR.jacket} />
             </RoundedBox>
-            {/* Open jacket over a black tee, and the chain */}
+            {/* Open jacket over a black tee */}
             <RoundedBox args={[0.13, 0.44, 0.03]} radius={0.012} position={[0, 0.83, -0.058]}>
               <meshStandardMaterial color={AVATAR.tee} />
             </RoundedBox>
-            <mesh position={[0, 1.0, -0.05]} rotation={[1.25, 0, 0]}>
-              <torusGeometry args={[0.055, 0.006, 6, 24]} />
-              <meshStandardMaterial color={AVATAR.chain} metalness={0.8} roughness={0.3} />
-            </mesh>
             <mesh position={[0, 1.1, 0.04]}>
               <cylinderGeometry args={[0.045, 0.05, 0.08, 12]} />
               <meshStandardMaterial color={AVATAR.skin} />
@@ -622,28 +617,6 @@ function Plant() {
         </group>
       ))}
     </group>
-  );
-}
-
-/** The snow photo, framed on the wall. It's another way into the "About" card. */
-function PhotoFrame() {
-  const texture = useMemo(() => {
-    const t = new THREE.TextureLoader().load("/images/martin-snow.jpg");
-    t.colorSpace = THREE.SRGBColorSpace;
-    t.anisotropy = 4;
-    return t;
-  }, []);
-  return (
-    <Pickable id="about" position={[-2.95, 1.75, 0.35]} rotation={[0, Math.PI / 2, 0]}>
-      <mesh castShadow>
-        <boxGeometry args={[0.5, 0.64, 0.035]} />
-        <meshStandardMaterial color={COLORS.trim} />
-      </mesh>
-      <mesh position={[0, 0, 0.019]}>
-        <planeGeometry args={[0.42, 0.56]} />
-        <meshStandardMaterial map={texture} roughness={0.6} />
-      </mesh>
-    </Pickable>
   );
 }
 
@@ -1089,7 +1062,6 @@ function World() {
       <Lamp />
       <Plant />
       <Shelf />
-      <PhotoFrame />
       <Monitor />
       <Robot />
       <ServerRack />
