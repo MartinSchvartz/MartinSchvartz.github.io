@@ -29,9 +29,20 @@ export default function Home() {
           <p className={styles.kicker} data-reveal>
             {profile.role} · {profile.location}
           </p>
-          <h1 id="intro-title" className={styles.title} data-reveal style={stagger(1)}>
-            Hi, I&apos;m Martin.
-          </h1>
+          <div className={styles.hello} data-reveal style={stagger(1)}>
+            {/* eslint-disable-next-line @next/next/no-img-element -- static export, image is already sized */}
+            <img
+              className={styles.portrait}
+              src="/images/martin.jpg"
+              alt="Martin smiling, with a city in the background"
+              width={330}
+              height={330}
+              decoding="async"
+            />
+            <h1 id="intro-title" className={styles.title}>
+              Hi, I&apos;m Martin.
+            </h1>
+          </div>
           <div className={styles.lede} data-reveal style={stagger(2)}>
             {intro.map((p) => (
               <p key={p}>{p}</p>

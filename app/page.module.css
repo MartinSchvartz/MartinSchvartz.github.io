@@ -38,8 +38,24 @@
   font-size: 0.9375rem;
 }
 
-.title {
+.hello {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 1.5rem);
   margin-top: 1.25rem;
+}
+
+.portrait {
+  flex: none;
+  width: clamp(4.5rem, 14vw, 6.5rem);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--rule);
+}
+
+.title {
   font-size: clamp(2rem, 6vw, 3.25rem);
   line-height: 1.1;
   letter-spacing: -0.015em;

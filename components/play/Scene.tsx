@@ -385,9 +385,11 @@ function Desk() {
 
 /** Colors for the avatar. Change these to look more like me. */
 const AVATAR = {
-  skin: "#d9a982",
-  hair: "#3a2a20",
-  shirt: "#3f5070",
+  skin: "#dcaa86",
+  hair: "#211a16",
+  jacket: "#e8e1d2",
+  tee: "#1f2023",
+  chain: "#c9c6bf",
   pants: "#2e3036",
   shoes: "#e6e1d8",
 };
@@ -401,12 +403,12 @@ function Arm({ side, armRef, elbowRef }: { side: 1 | -1; armRef: React.RefObject
     <group ref={armRef} position={[0.2 * side, 1.0, 0.02]}>
       <mesh position={[0, -0.13, 0]} castShadow>
         <capsuleGeometry args={[0.045, 0.18, 4, 12]} />
-        <meshStandardMaterial color={AVATAR.shirt} />
+        <meshStandardMaterial color={AVATAR.jacket} />
       </mesh>
       <group ref={elbowRef} position={[0, -0.26, 0]}>
         <mesh position={[0, -0.11, 0]} castShadow>
           <capsuleGeometry args={[0.038, 0.17, 4, 12]} />
-          <meshStandardMaterial color={AVATAR.shirt} />
+          <meshStandardMaterial color={AVATAR.jacket} />
         </mesh>
         <mesh position={[0, -0.25, 0]} castShadow>
           <sphereGeometry args={[0.04, 14, 10]} />
@@ -499,8 +501,16 @@ function ChairAndMe() {
         <group ref={torso} position={[0, 0.55, 0.06]}>
           <group position={[0, -0.55, -0.06]}>
             <RoundedBox args={[0.38, 0.5, 0.22]} radius={0.08} position={[0, 0.82, 0.05]} castShadow>
-              <meshStandardMaterial color={AVATAR.shirt} />
+              <meshStandardMaterial color={AVATAR.jacket} />
             </RoundedBox>
+            {/* Open jacket over a black tee, and the chain */}
+            <RoundedBox args={[0.13, 0.44, 0.03]} radius={0.012} position={[0, 0.83, -0.058]}>
+              <meshStandardMaterial color={AVATAR.tee} />
+            </RoundedBox>
+            <mesh position={[0, 1.0, -0.05]} rotation={[1.25, 0, 0]}>
+              <torusGeometry args={[0.055, 0.006, 6, 24]} />
+              <meshStandardMaterial color={AVATAR.chain} metalness={0.8} roughness={0.3} />
+            </mesh>
             <mesh position={[0, 1.1, 0.04]}>
               <cylinderGeometry args={[0.045, 0.05, 0.08, 12]} />
               <meshStandardMaterial color={AVATAR.skin} />
@@ -513,6 +523,10 @@ function ChairAndMe() {
               {/* Hair: a cap over the top and back of the head */}
               <mesh position={[0, 0.025, 0.015]} rotation={[-0.35, 0, 0]} castShadow>
                 <sphereGeometry args={[0.128, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
+                <meshStandardMaterial color={AVATAR.hair} roughness={0.9} />
+              </mesh>
+              <mesh position={[0, 0.095, -0.03]} rotation={[0.35, 0, 0]} scale={[1, 0.55, 1.05]} castShadow>
+                <sphereGeometry args={[0.105, 20, 14]} />
                 <meshStandardMaterial color={AVATAR.hair} roughness={0.9} />
               </mesh>
               {[-1, 1].map((side) => (
@@ -608,6 +622,28 @@ function Plant() {
         </group>
       ))}
     </group>
+  );
+}
+
+/** The snow photo, framed on the wall. It's another way into the "About" card. */
+function PhotoFrame() {
+  const texture = useMemo(() => {
+    const t = new THREE.TextureLoader().load("/images/martin-snow.jpg");
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    return t;
+  }, []);
+  return (
+    <Pickable id="about" position={[-2.95, 1.75, 0.35]} rotation={[0, Math.PI / 2, 0]}>
+      <mesh castShadow>
+        <boxGeometry args={[0.5, 0.64, 0.035]} />
+        <meshStandardMaterial color={COLORS.trim} />
+      </mesh>
+      <mesh position={[0, 0, 0.019]}>
+        <planeGeometry args={[0.42, 0.56]} />
+        <meshStandardMaterial map={texture} roughness={0.6} />
+      </mesh>
+    </Pickable>
   );
 }
 
@@ -1053,6 +1089,7 @@ function World() {
       <Lamp />
       <Plant />
       <Shelf />
+      <PhotoFrame />
       <Monitor />
       <Robot />
       <ServerRack />

@@ -52,7 +52,7 @@ export const focus: Focus[] = [
 
 export const about = {
   title: "About",
-  body: "Based in Buenos Aires, working remotely with US teams. Spanish is my first language and I work in English every day. I'm also studying Computer Engineering at UTN.",
+  body: "Based in Buenos Aires, working remotely with US teams. Spanish is my first language and I work in English every day. I'm also studying Computer Science at UTN.",
 };
 
 export type Role = {
