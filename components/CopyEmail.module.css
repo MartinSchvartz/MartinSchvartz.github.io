@@ -1,0 +1,72 @@
+.button {
+  position: relative;
+  display: inline-flex;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: transform 200ms var(--ease);
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+/* Both labels share one grid cell so the button keeps its width while they crossfade. */
+.labels {
+  display: grid;
+}
+
+.idle,
+.done {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  transition:
+    opacity 200ms var(--ease),
+    transform 200ms var(--ease);
+}
+
+.done {
+  opacity: 0;
+  transform: translateY(4px);
+  color: var(--accent);
+}
+
+.check {
+  transform: scale(0.4) rotate(-20deg);
+  opacity: 0;
+  transition:
+    transform 320ms cubic-bezier(0.3, 1.6, 0.5, 1),
+    opacity 160ms linear;
+}
+
+.button[data-state="failed"] .check {
+  display: none;
+}
+
+.button:not([data-state="idle"]) .idle {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.button:not([data-state="idle"]) .done {
+  opacity: 1;
+  transform: none;
+}
+
+.button:not([data-state="idle"]) .check {
+  opacity: 1;
+  transform: none;
+  transition-delay: 80ms;
+}
