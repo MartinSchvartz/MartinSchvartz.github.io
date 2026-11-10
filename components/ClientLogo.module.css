@@ -1,0 +1,106 @@
+.client {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 3.5rem;
+  padding: 0 1rem;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* Both layers share one grid cell. */
+.gray,
+.color {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+}
+
+.client img {
+  display: block;
+  height: 1.75rem;
+  width: auto;
+  max-width: 100%;
+}
+
+/* Kroger's mark is nearly square, so it needs more height to read at the same size. */
+.client img[src$="kroger.svg"] {
+  height: 2.6rem;
+}
+
+.gray {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+.gray .wordmark {
+  color: var(--gray);
+}
+
+/* Explicit stacking: the gray layer's opacity and filter paint it later than normal content,
+   so without this it would cover the color layer once that one reaches opacity 1. */
+.color {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 220ms var(--ease);
+}
+
+.client:hover .color,
+.client:focus-visible .color {
+  opacity: 1;
+}
+
+.wordmark {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+/* Name tooltip above the logo. */
+.tip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+
+.client:hover .tip,
+.client:focus-visible .tip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 40rem) {
+  .client {
+    padding: 0 0.5rem;
+  }
+
+  .client img {
+    height: 1.4rem;
+  }
+
+  .client img[src$="kroger.svg"] {
+    height: 2.1rem;
+  }
+
+  .wordmark {
+    font-size: 0.75rem;
+  }
+}

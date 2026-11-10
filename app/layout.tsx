@@ -1,19 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans, Newsreader } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { Interactions } from "@/components/Interactions";
 import "./globals.css";
 
-const serif = Newsreader({
+const sans = Geist({
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
+  variable: "--font-sans",
   display: "swap",
 });
 
-const sans = IBM_Plex_Sans({
+const mono = Geist_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-sans",
+  variable: "--font-mono-src",
   display: "swap",
 });
 
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://martinschvartz.github.io"),
   title: "Martin Schvartz · Senior Software Engineer",
   description:
-    "Fullstack engineer in Buenos Aires. Go and Python backends, React and TypeScript frontends.",
+    "Senior software engineer in Buenos Aires with 8+ years building products end to end: Mercado Libre, FORM, Go, React and AI agents.",
   openGraph: {
     title: "Martin Schvartz",
     description: "Senior Software Engineer in Buenos Aires.",
@@ -31,10 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf9f6" },
-    { media: "(prefers-color-scheme: dark)", color: "#141413" },
-  ],
+  themeColor: "#f5f4f0",
 };
 
 // Runs before paint so reveal styles only apply when JS is on.
@@ -42,7 +38,7 @@ const boot = `document.documentElement.classList.add('js')`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: boot }} />
       </head>

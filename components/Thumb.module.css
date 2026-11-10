@@ -1,0 +1,239 @@
+/* Sizes use container units so each drawing scales with its card. */
+.thumb {
+  container-type: inline-size;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 10px;
+  font-family: var(--font-body);
+}
+
+/* Padding lives here, not on .thumb, so cqw stays relative to the full width. */
+.inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* FORM: a store shelf with one gap boxed by the image recognition. */
+.form {
+  background: #0f3b3a;
+  color: #f2efe6;
+}
+
+.wordmark {
+  position: absolute;
+  top: 6cqw;
+  left: 6cqw;
+  font-weight: 500;
+  font-size: 4.2cqw;
+  letter-spacing: 0.2em;
+}
+
+.shelf {
+  position: absolute;
+  left: 22cqw;
+  right: 8cqw;
+  bottom: 7cqw;
+  display: grid;
+  gap: 2.4cqw;
+}
+
+.shelfRow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.2cqw;
+  padding-bottom: 1.2cqw;
+  border-bottom: 0.8cqw solid #c9c2b0;
+}
+
+.product {
+  height: 8.5cqw;
+  border-radius: 1cqw 1cqw 0.4cqw 0.4cqw;
+}
+.product[data-p="a"] { background: #1f6fd6; }
+.product[data-p="b"] { background: #e8463a; }
+.product[data-p="c"] { background: #f2c230; }
+.product[data-p="d"] { background: #f2efe6; }
+.product[data-p="e"] { background: #3fb37f; }
+.product[data-p="f"] { background: #8a5cd1; }
+.product[data-p="empty"] { background: transparent; }
+
+/* The detection box sits over the empty slot (row 2, column 5). */
+.detect {
+  position: absolute;
+  top: calc(8.5cqw + 1.2cqw + 0.8cqw + 2.4cqw - 1cqw);
+  left: calc((100% - 5 * 1.2cqw) / 6 * 4 + 4 * 1.2cqw - 1cqw);
+  width: calc((100% - 5 * 1.2cqw) / 6 + 2cqw);
+  height: calc(8.5cqw + 2cqw);
+  border: 0.6cqw solid #7cf0b4;
+  border-radius: 1cqw;
+}
+
+.detectLabel {
+  position: absolute;
+  bottom: calc(100% + 1cqw);
+  right: -0.6cqw;
+  white-space: nowrap;
+  padding: 0.5cqw 1.4cqw;
+  border-radius: 0.8cqw;
+  background: #7cf0b4;
+  color: #0f3b3a;
+  font-size: 2.6cqw;
+  font-weight: 500;
+}
+
+/* Meli+: the wordmark and the perks it bundles. */
+.meliplus {
+  background: #2f1a84;
+  color: #fff;
+}
+
+.meliplus .inner {
+  justify-content: center;
+  padding: 0 9cqw;
+  gap: 4cqw;
+}
+
+.meliplusMark {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 15cqw;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.meliplusMark span {
+  color: #ffe600;
+}
+
+.perks {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2cqw;
+  font-size: 3.6cqw;
+}
+
+.perks li {
+  padding: 1cqw 2.6cqw;
+  border-radius: 99px;
+  background: rgb(255 255 255 / 0.14);
+}
+
+/* Address: a checkout form with a valid address. */
+.address {
+  background: #ffe600;
+  color: #2d3277;
+}
+
+.addressForm {
+  position: absolute;
+  inset: 9cqw 26cqw 9cqw 9cqw;
+  display: flex;
+  flex-direction: column;
+}
+
+.fieldLabel {
+  font-size: 3cqw;
+  margin-bottom: 1cqw;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3.5cqw;
+  padding: 2cqw 2.6cqw;
+  border-radius: 1.4cqw;
+  background: #fff;
+  border: 0.5cqw solid #2d3277;
+  font-size: 3.8cqw;
+  white-space: nowrap;
+}
+
+.fieldShort {
+  width: 45%;
+}
+
+.check {
+  width: 4.4cqw;
+  height: 4.4cqw;
+  color: #00a650;
+}
+
+.pin {
+  position: absolute;
+  right: -18cqw;
+  top: 2cqw;
+  width: 11cqw;
+  color: #2d3277;
+}
+
+/* Delivery Day: a week with Thursday picked and the parcels stacked on it. */
+.delivery {
+  background: #2d3277;
+  color: #fff;
+}
+
+.delivery .inner {
+  justify-content: flex-end;
+  padding: 0 7cqw 10cqw;
+}
+
+.caption {
+  position: absolute;
+  top: 7cqw;
+  left: 7cqw;
+  font-size: 3.8cqw;
+  color: #ffe600;
+}
+
+.week {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1.6cqw;
+}
+
+.week li {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 0.4cqw solid rgb(255 255 255 / 0.35);
+  font-size: 3.6cqw;
+}
+
+.week li[data-picked] {
+  background: #ffe600;
+  border-color: #ffe600;
+  color: #2d3277;
+  font-weight: 500;
+}
+
+.boxes {
+  position: absolute;
+  bottom: calc(100% + 2cqw);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqw;
+}
+
+.boxes span {
+  display: block;
+  width: 7cqw;
+  height: 5cqw;
+  border-radius: 0.6cqw;
+  background: #c8915a;
+  box-shadow: inset 0 -1.2cqw 0 rgb(0 0 0 / 0.12);
+}
+.boxes span:nth-child(2) { width: 9cqw; }
+.boxes span:nth-child(3) { width: 10cqw; height: 6cqw; }

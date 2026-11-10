@@ -26,7 +26,7 @@ export function Interactions() {
 
   useEffect(() => {
     console.log(
-      "%cHi there.%c\nSource: https://github.com/MartinSchvartz/MartinSchvartz.github.io\nThere's a 3D version of this site at /play.",
+      "%cHi there.%c\nSource: https://github.com/MartinSchvartz/MartinSchvartz.github.io",
       "font: 500 14px Georgia, serif",
       "font: 12px system-ui, sans-serif; color: gray",
     );

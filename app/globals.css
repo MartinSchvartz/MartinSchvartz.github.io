@@ -1,33 +1,25 @@
 :root {
-  --bg: #faf9f6;
+  --bg: #f5f4f0;
   --surface: #ffffff;
-  --text: #1c1b19;
-  --muted: #6b6862;
-  --rule: #e4e1da;
-  --shadow: 0 6px 20px rgb(28 27 25 / 0.08);
+  --text: #111111;
+  --muted: #5f5d58;
+  --gray: #8c8a84;
+  --rule: #e2e0da;
+  --shadow: 0 10px 30px rgb(17 17 17 / 0.08);
 
-  --accent: #2b4fa8;
+  --accent: #111111;
+  --accent-ink: #ffffff;
+  --accent-soft: #eae8e2;
 
   --font-body: var(--font-sans), system-ui, sans-serif;
-  --font-head: var(--font-serif), Georgia, serif;
+  --font-head: var(--font-sans), system-ui, sans-serif;
+  --font-mono: var(--font-mono-src), ui-monospace, monospace;
   --measure: 42rem;
-  --gutter: 1.25rem;
+  --wide: 72rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #141413;
-    --surface: #1b1b19;
-    --text: #eceae4;
-    --muted: #9a978f;
-    --rule: #2c2b28;
-    --shadow: 0 6px 20px rgb(0 0 0 / 0.4);
-
-    --accent: #8ea8e8;
-  }
+  color-scheme: light;
 }
 
 *,
@@ -54,7 +46,8 @@ body {
 
 h1, h2, h3 {
   font-family: var(--font-head);
-  font-weight: 400;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   line-height: 1.2;
   margin: 0;
 }
@@ -69,7 +62,7 @@ a {
 
 ::selection {
   background: var(--accent);
-  color: var(--bg);
+  color: var(--accent-ink);
 }
 
 :focus-visible {
@@ -98,7 +91,7 @@ a {
   white-space: nowrap;
 }
 
-/* Underline that slides in from the left. */
+/* Faint underline that darkens on hover. */
 .u-link {
   position: relative;
   color: var(--accent);
@@ -112,13 +105,12 @@ a {
   bottom: -0.1em;
   height: 1px;
   background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 260ms var(--ease);
+  opacity: 0.3;
+  transition: opacity 200ms var(--ease);
 }
 .u-link:hover::after,
 .u-link:focus-visible::after {
-  transform: scaleX(1);
+  opacity: 1;
 }
 
 /* Scroll reveals. Only hidden when JS is running, so content never gets stuck invisible. */
