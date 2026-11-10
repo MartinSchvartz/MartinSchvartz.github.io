@@ -16,7 +16,7 @@ const objects: Record<TopicId, string> = {
   backend: "Server rack",
   frontend: "Monitor",
   reliability: "Wall dashboard",
-  about: "Mate",
+  about: "Me",
 };
 
 export const topics: Topic[] = [

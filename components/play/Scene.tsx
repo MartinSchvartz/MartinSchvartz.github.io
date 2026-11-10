@@ -63,7 +63,7 @@ const VIEWS: Record<TopicId | "home", { cam: Vec3; look: Vec3 }> = {
   agents: { cam: [3.55, 1.96, 1.05], look: [1.1, 1.0, -2.1] },
   backend: { cam: [4.3, 2.59, 2.81], look: [2.2, 0.75, -2.35] },
   reliability: { cam: [3.19, 2.11, 1.27], look: [-2.85, 1.85, -1.0] },
-  about: { cam: [0.77, 2.04, 0.74], look: [-0.8, 0.9, -2.15] },
+  about: { cam: [2.8, 2.1, 2.6], look: [0.2, 0.8, -1.55] },
 };
 
 // ---------------------------------------------------------------------------
@@ -373,36 +373,172 @@ function Desk() {
         </mesh>
       ))}
       {/* Keyboard and mouse */}
-      <RoundedBox args={[0.6, 0.025, 0.18]} radius={0.01} position={[0.15, 0.805, -2.05]} castShadow>
+      <RoundedBox args={[0.6, 0.025, 0.18]} radius={0.01} position={[0.15, 0.805, -1.98]} castShadow>
         <meshStandardMaterial color="#d9d3c8" />
       </RoundedBox>
-      <RoundedBox args={[0.07, 0.03, 0.11]} radius={0.015} position={[0.62, 0.805, -2.03]} castShadow>
+      <RoundedBox args={[0.07, 0.03, 0.11]} radius={0.015} position={[0.62, 0.805, -1.97]} castShadow>
         <meshStandardMaterial color="#d9d3c8" />
       </RoundedBox>
     </group>
   );
 }
 
-function Chair() {
+/** Colors for the avatar. Change these to look more like me. */
+const AVATAR = {
+  skin: "#d9a982",
+  hair: "#3a2a20",
+  shirt: "#3f5070",
+  pants: "#2e3036",
+  shoes: "#e6e1d8",
+};
+
+const CHAIR_POS: Vec3 = [0.2, 0, -1.55];
+const CHAIR_IDLE = -0.35;
+
+/** Arm hanging from the shoulder; rotations are driven from the parent. */
+function Arm({ side, armRef, elbowRef }: { side: 1 | -1; armRef: React.RefObject<THREE.Group | null>; elbowRef: React.RefObject<THREE.Group | null> }) {
   return (
-    <group position={[0.2, 0, -1.25]} rotation={[0, -0.35, 0]}>
-      <RoundedBox args={[0.55, 0.07, 0.5]} radius={0.03} position={[0, 0.48, 0]} castShadow>
-        <meshStandardMaterial color="#3d4250" />
-      </RoundedBox>
-      <RoundedBox args={[0.52, 0.55, 0.06]} radius={0.03} position={[0, 0.82, 0.25]} rotation={[-0.08, 0, 0]} castShadow>
-        <meshStandardMaterial color="#3d4250" />
-      </RoundedBox>
-      <mesh position={[0, 0.24, 0]} castShadow>
-        <cylinderGeometry args={[0.025, 0.025, 0.46]} />
-        <meshStandardMaterial color={COLORS.metal} />
+    <group ref={armRef} position={[0.2 * side, 1.0, 0.02]}>
+      <mesh position={[0, -0.13, 0]} castShadow>
+        <capsuleGeometry args={[0.045, 0.18, 4, 12]} />
+        <meshStandardMaterial color={AVATAR.shirt} />
       </mesh>
-      {[0, 1, 2, 3, 4].map((i) => (
-        <mesh key={i} position={[Math.cos((i / 5) * Math.PI * 2) * 0.16, 0.03, Math.sin((i / 5) * Math.PI * 2) * 0.16]} rotation={[0, -(i / 5) * Math.PI * 2, 0]} castShadow>
-          <boxGeometry args={[0.32, 0.03, 0.04]} />
+      <group ref={elbowRef} position={[0, -0.26, 0]}>
+        <mesh position={[0, -0.11, 0]} castShadow>
+          <capsuleGeometry args={[0.038, 0.17, 4, 12]} />
+          <meshStandardMaterial color={AVATAR.shirt} />
+        </mesh>
+        <mesh position={[0, -0.25, 0]} castShadow>
+          <sphereGeometry args={[0.04, 14, 10]} />
+          <meshStandardMaterial color={AVATAR.skin} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
+/** Desk chair with me sitting in it. Selecting "About" swivels it round to wave at the camera. */
+function ChairAndMe() {
+  const { reduced, selected } = useDesk();
+  const swivel = useRef<THREE.Group>(null);
+  const torso = useRef<THREE.Group>(null);
+  const head = useRef<THREE.Group>(null);
+  const armL = useRef<THREE.Group>(null);
+  const armR = useRef<THREE.Group>(null);
+  const elbowL = useRef<THREE.Group>(null);
+  const elbowR = useRef<THREE.Group>(null);
+
+  // Facing angle (the avatar faces -z) that points at the "about" camera.
+  const facing = useMemo(() => {
+    const [cx, , cz] = VIEWS.about.cam;
+    return Math.atan2(-(cx - CHAIR_POS[0]), -(cz - CHAIR_POS[2]));
+  }, []);
+
+  useFrame(({ clock }, dt) => {
+    if (!swivel.current || !torso.current || !head.current || !armL.current || !armR.current || !elbowL.current || !elbowR.current) return;
+    const t = clock.elapsedTime;
+    const waving = selected === "about";
+    const k = reduced ? 1000 : 5;
+    const d = (from: number, to: number) => damp(from, to, k, dt);
+
+    swivel.current.rotation.y = d(swivel.current.rotation.y, waving ? facing : CHAIR_IDLE);
+
+    // Typing pose: upper arms down and forward, forearms level over the keyboard.
+    const typeL = reduced ? 0 : Math.max(0, Math.sin(t * 9)) * 0.08;
+    const typeR = reduced ? 0 : Math.max(0, Math.sin(t * 9 + 2)) * 0.08;
+    armL.current.rotation.x = d(armL.current.rotation.x, 0.55);
+    elbowL.current.rotation.x = d(elbowL.current.rotation.x, waving ? 0.6 : 1.05 + typeL);
+    armR.current.rotation.x = d(armR.current.rotation.x, waving ? 0 : 0.55);
+    armR.current.rotation.z = d(armR.current.rotation.z, waving ? 2.5 : 0);
+    elbowR.current.rotation.x = d(elbowR.current.rotation.x, waving ? 0 : 1.05 + typeR);
+    elbowR.current.rotation.z = waving && !reduced ? Math.sin(t * 8) * 0.45 + 0.2 : d(elbowR.current.rotation.z, 0);
+
+    torso.current.rotation.x = d(torso.current.rotation.x, waving ? 0 : 0.12);
+    torso.current.scale.y = reduced ? 1 : 1 + Math.sin(t * 1.6) * 0.008;
+    head.current.rotation.x = d(head.current.rotation.x, waving ? -0.05 : 0.12);
+    head.current.rotation.z = reduced ? 0 : Math.sin(t * 0.7) * 0.04;
+  });
+
+  return (
+    <Pickable id="about" position={CHAIR_POS}>
+      <group ref={swivel} rotation={[0, CHAIR_IDLE, 0]}>
+        {/* Chair */}
+        <RoundedBox args={[0.55, 0.07, 0.5]} radius={0.03} position={[0, 0.48, 0]} castShadow>
+          <meshStandardMaterial color="#3d4250" />
+        </RoundedBox>
+        <RoundedBox args={[0.52, 0.55, 0.06]} radius={0.03} position={[0, 0.82, 0.25]} rotation={[-0.08, 0, 0]} castShadow>
+          <meshStandardMaterial color="#3d4250" />
+        </RoundedBox>
+        <mesh position={[0, 0.24, 0]} castShadow>
+          <cylinderGeometry args={[0.025, 0.025, 0.46]} />
           <meshStandardMaterial color={COLORS.metal} />
         </mesh>
-      ))}
-    </group>
+        {[0, 1, 2, 3, 4].map((i) => (
+          <mesh key={i} position={[Math.cos((i / 5) * Math.PI * 2) * 0.16, 0.03, Math.sin((i / 5) * Math.PI * 2) * 0.16]} rotation={[0, -(i / 5) * Math.PI * 2, 0]} castShadow>
+            <boxGeometry args={[0.32, 0.03, 0.04]} />
+            <meshStandardMaterial color={COLORS.metal} />
+          </mesh>
+        ))}
+
+        {/* Legs: thighs on the seat, shins down to the floor */}
+        {[-1, 1].map((side) => (
+          <group key={side} position={[0.09 * side, 0, 0]}>
+            <RoundedBox args={[0.13, 0.12, 0.42]} radius={0.05} position={[0, 0.58, -0.12]} castShadow>
+              <meshStandardMaterial color={AVATAR.pants} />
+            </RoundedBox>
+            <RoundedBox args={[0.11, 0.5, 0.12]} radius={0.045} position={[0, 0.32, -0.33]} castShadow>
+              <meshStandardMaterial color={AVATAR.pants} />
+            </RoundedBox>
+            <RoundedBox args={[0.12, 0.07, 0.22]} radius={0.03} position={[0, 0.04, -0.38]} castShadow>
+              <meshStandardMaterial color={AVATAR.shoes} />
+            </RoundedBox>
+          </group>
+        ))}
+
+        {/* Upper body pivots at the hips so it can lean toward the desk */}
+        <group ref={torso} position={[0, 0.55, 0.06]}>
+          <group position={[0, -0.55, -0.06]}>
+            <RoundedBox args={[0.38, 0.5, 0.22]} radius={0.08} position={[0, 0.82, 0.05]} castShadow>
+              <meshStandardMaterial color={AVATAR.shirt} />
+            </RoundedBox>
+            <mesh position={[0, 1.1, 0.04]}>
+              <cylinderGeometry args={[0.045, 0.05, 0.08, 12]} />
+              <meshStandardMaterial color={AVATAR.skin} />
+            </mesh>
+            <group ref={head} position={[0, 1.24, 0.03]}>
+              <mesh castShadow>
+                <sphereGeometry args={[0.12, 24, 18]} />
+                <meshStandardMaterial color={AVATAR.skin} />
+              </mesh>
+              {/* Hair: a cap over the top and back of the head */}
+              <mesh position={[0, 0.025, 0.015]} rotation={[-0.35, 0, 0]} castShadow>
+                <sphereGeometry args={[0.128, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
+                <meshStandardMaterial color={AVATAR.hair} roughness={0.9} />
+              </mesh>
+              {[-1, 1].map((side) => (
+                <mesh key={side} position={[0.122 * side, -0.01, 0.01]}>
+                  <sphereGeometry args={[0.025, 10, 8]} />
+                  <meshStandardMaterial color={AVATAR.skin} />
+                </mesh>
+              ))}
+              {/* Eyes, on the side facing the desk */}
+              {[-1, 1].map((side) => (
+                <mesh key={`e${side}`} position={[0.042 * side, 0.0, -0.113]}>
+                  <sphereGeometry args={[0.013, 10, 8]} />
+                  <meshStandardMaterial color="#1f1d1b" />
+                </mesh>
+              ))}
+              <mesh position={[0, -0.045, -0.114]} rotation={[0, Math.PI, Math.PI]}>
+                <torusGeometry args={[0.032, 0.007, 8, 16, Math.PI]} />
+                <meshStandardMaterial color="#1f1d1b" />
+              </mesh>
+            </group>
+            <Arm side={-1} armRef={armL} elbowRef={elbowL} />
+            <Arm side={1} armRef={armR} elbowRef={elbowR} />
+          </group>
+        </group>
+      </group>
+    </Pickable>
   );
 }
 
@@ -845,7 +981,7 @@ function Mate() {
   });
 
   return (
-    <Pickable id="about" position={[-0.55, 0.79, -2.05]}>
+    <group position={[-0.55, 0.79, -2.05]}>
       <mesh geometry={gourd} castShadow>
         <meshStandardMaterial color={COLORS.gourd} roughness={0.7} side={THREE.DoubleSide} />
       </mesh>
@@ -864,7 +1000,7 @@ function Mate() {
           </mesh>
         ))}
       </group>
-    </Pickable>
+    </group>
   );
 }
 
@@ -913,7 +1049,7 @@ function World() {
     <group ref={group}>
       <Room />
       <Desk />
-      <Chair />
+      <ChairAndMe />
       <Lamp />
       <Plant />
       <Shelf />

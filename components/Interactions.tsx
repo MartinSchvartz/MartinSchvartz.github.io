@@ -1,11 +1,15 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 /** Page-wide behavior: scroll reveals and a note for devtools readers. */
 export function Interactions() {
+  const pathname = usePathname();
+
+  // The layout stays mounted across client-side navigation, so observe again on every route.
   useEffect(() => {
-    const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const targets = document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)");
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -17,14 +21,15 @@ export function Interactions() {
       { rootMargin: "0px 0px -8% 0px", threshold: 0.1 },
     );
     targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [pathname]);
 
+  useEffect(() => {
     console.log(
-      "%cHi there.%c\nSource: https://github.com/MartinSchvartz/MartinSchvartz.github.io\nThere's a 3D version of this page at /play.",
+      "%cHi there.%c\nSource: https://github.com/MartinSchvartz/MartinSchvartz.github.io\nThere's a 3D version of this site at /play.",
       "font: 500 14px Georgia, serif",
       "font: 12px system-ui, sans-serif; color: gray",
     );
-
-    return () => io.disconnect();
   }, []);
 
   return null;
