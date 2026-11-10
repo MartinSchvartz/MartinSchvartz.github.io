@@ -6,10 +6,7 @@
   --rule: #e4e1da;
   --shadow: 0 6px 20px rgb(28 27 25 / 0.08);
 
-  --accent-ink: #2b4fa8;
-  --accent-clay: #b3502d;
-  --accent-moss: #4d6b2e;
-  --accent: var(--accent-ink);
+  --accent: #2b4fa8;
 
   --font-body: var(--font-sans), system-ui, sans-serif;
   --font-head: var(--font-serif), Georgia, serif;
@@ -29,14 +26,9 @@
     --rule: #2c2b28;
     --shadow: 0 6px 20px rgb(0 0 0 / 0.4);
 
-    --accent-ink: #8ea8e8;
-    --accent-clay: #e28d6b;
-    --accent-moss: #a0bd7c;
+    --accent: #8ea8e8;
   }
 }
-
-:root[data-accent="clay"] { --accent: var(--accent-clay); }
-:root[data-accent="moss"] { --accent: var(--accent-moss); }
 
 *,
 *::before,

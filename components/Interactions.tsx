@@ -1,14 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { cycleAccent } from "@/lib/accent";
 
-function isTyping(target: EventTarget | null) {
-  if (!(target instanceof HTMLElement)) return false;
-  return target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName);
-}
-
-/** Page-wide behavior: scroll reveals, the "k" accent shortcut and a note for devtools readers. */
+/** Page-wide behavior: scroll reveals and a note for devtools readers. */
 export function Interactions() {
   useEffect(() => {
     const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
@@ -24,23 +18,13 @@ export function Interactions() {
     );
     targets.forEach((el) => io.observe(el));
 
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "k" || e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
-      if (isTyping(e.target)) return;
-      cycleAccent();
-    };
-    window.addEventListener("keydown", onKey);
-
     console.log(
-      "%cHi there.%c\nYou found the console. The source is at https://github.com/MartinSchvartz/MartinSchvartz.github.io\nTry pressing k on the page.",
+      "%cHi there.%c\nSource: https://github.com/MartinSchvartz/MartinSchvartz.github.io\nThere's a 3D version of this page at /play.",
       "font: 500 14px Georgia, serif",
       "font: 12px system-ui, sans-serif; color: gray",
     );
 
-    return () => {
-      io.disconnect();
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => io.disconnect();
   }, []);
 
   return null;

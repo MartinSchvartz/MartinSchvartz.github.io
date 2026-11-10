@@ -59,15 +59,7 @@ export function Timeline({ roles }: { roles: Role[] }) {
           <div className={styles.body}>
             <span className={styles.dot} data-dot aria-hidden="true" />
             <h3 className={styles.company}>{role.company}</h3>
-            <p className={styles.meta}>
-              {role.title}
-              {role.location && <> · {role.location}</>}
-            </p>
-            <ul className={styles.points}>
-              {role.points.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
+            <p className={styles.meta}>{role.title}</p>
           </div>
         </li>
       ))}

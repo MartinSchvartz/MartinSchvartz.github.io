@@ -46,10 +46,6 @@
   text-wrap: balance;
 }
 
-.title em {
-  font-style: italic;
-  color: var(--muted);
-}
 
 .lede {
   margin-top: 2rem;
@@ -77,6 +73,42 @@
 
 .muted {
   color: var(--muted);
+}
+
+.more {
+  margin-top: 2.5rem;
+  font-size: 0.9375rem;
+}
+
+.play {
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--rule);
+}
+
+.focus {
+  display: grid;
+  gap: 3rem;
+}
+
+.areaTitle {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.stack {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.stack li:not(:last-child)::after {
+  content: "·";
+  padding: 0 0.6em;
 }
 
 .empty {
@@ -146,7 +178,7 @@
   inset: 0;
 }
 
-.stack {
+.cardStack {
   margin-top: 1rem;
   font-size: 0.8125rem;
   color: var(--muted);
@@ -192,5 +224,15 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .play {
+    padding-left: 0;
+    border-left: 0;
   }
 }

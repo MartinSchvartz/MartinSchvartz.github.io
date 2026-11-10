@@ -1,9 +1,11 @@
-import { AccentButton } from "@/components/AccentButton";
+import Link from "next/link";
 import { CopyEmail } from "@/components/CopyEmail";
 import { Timeline } from "@/components/Timeline";
-import { experience, profile } from "@/lib/content";
+import { experience, focus, intro, profile } from "@/lib/content";
 import { projects } from "@/lib/projects";
 import styles from "./page.module.css";
+
+const stagger = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
 export default function Home() {
   return (
@@ -16,7 +18,9 @@ export default function Home() {
           <a className="u-link" href="#work">Work</a>
           <a className="u-link" href="#projects">Projects</a>
           <a className="u-link" href="#contact">Contact</a>
-          <AccentButton />
+          <Link className={`u-link ${styles.play}`} href="/play/">
+            Explore in 3D
+          </Link>
         </nav>
       </header>
 
@@ -25,27 +29,47 @@ export default function Home() {
           <p className={styles.kicker} data-reveal>
             {profile.role} · {profile.location}
           </p>
-          <h1 id="intro-title" className={styles.title} data-reveal style={{ "--i": 1 } as React.CSSProperties}>
-            I build products people use every day, <em>from the database to the button</em>.
+          <h1 id="intro-title" className={styles.title} data-reveal style={stagger(1)}>
+            Hi, I&apos;m Martin.
           </h1>
-          <div className={styles.lede} data-reveal style={{ "--i": 2 } as React.CSSProperties}>
-            <p>
-              I&apos;m Martin, a product-minded fullstack engineer with eight years of shipping
-              customer-facing features at scale, from MercadoLibre&apos;s platform for 220M+ users to
-              small US startups.
-            </p>
-            <p>
-              I like owning work end to end: Go and Python services on PostgreSQL, React and
-              TypeScript on the front.
-            </p>
+          <div className={styles.lede} data-reveal style={stagger(2)}>
+            {intro.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
           </div>
         </section>
 
         <section id="work" className={styles.section} aria-labelledby="work-title">
           <h2 id="work-title" className={styles.label} data-reveal>
+            What I work on
+          </h2>
+          <div className={styles.focus}>
+            {focus.map((area) => (
+              <article key={area.id} className={styles.area} data-reveal>
+                <h3 className={styles.areaTitle}>{area.title}</h3>
+                <p>{area.body}</p>
+                <ul className={styles.stack} aria-label={`${area.title} stack`}>
+                  {area.stack.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.section} aria-labelledby="experience-title">
+          <h2 id="experience-title" className={styles.label} data-reveal>
             Experience
           </h2>
           <Timeline roles={experience} />
+          <p className={`${styles.muted} ${styles.more}`} data-reveal>
+            The long version is on{" "}
+            <a className="u-link" href={profile.links.linkedin}>
+              LinkedIn
+            </a>
+            .
+          </p>
         </section>
 
         <section id="projects" className={styles.section} aria-labelledby="projects-title">
@@ -56,7 +80,7 @@ export default function Home() {
             <div className={styles.empty} data-reveal>
               <p className={styles.emptyTitle}>Nothing here yet.</p>
               <p className={styles.muted}>
-                A subscription metrics dashboard is on the way. In the meantime, my code lives on{" "}
+                A subscription metrics dashboard is on the way. Until then, my code lives on{" "}
                 <a className="u-link" href={profile.links.github}>
                   GitHub
                 </a>
@@ -66,7 +90,7 @@ export default function Home() {
           ) : (
             <ul className={styles.projects}>
               {projects.map((project, i) => (
-                <li key={project.title} data-reveal style={{ "--i": i % 2 } as React.CSSProperties}>
+                <li key={project.title} data-reveal style={stagger(i % 2)}>
                   <article className={styles.card}>
                     <h3 className={styles.cardTitle}>
                       {project.href ? (
@@ -78,7 +102,7 @@ export default function Home() {
                       )}
                     </h3>
                     <p className={styles.muted}>{project.description}</p>
-                    <p className={styles.stack}>{project.stack.join(" · ")}</p>
+                    <p className={styles.cardStack}>{project.stack.join(" · ")}</p>
                     {project.repo && (
                       <a className={`u-link ${styles.repo}`} href={project.repo}>
                         Source
@@ -97,7 +121,7 @@ export default function Home() {
           </h2>
           <div data-reveal>
             <p className={styles.contactLine}>
-              If you&apos;re building something and think I could help, write to me at{" "}
+              Building something and think I could help? Write to me at{" "}
               <a className="u-link" href={`mailto:${profile.email}`}>
                 {profile.email}
               </a>

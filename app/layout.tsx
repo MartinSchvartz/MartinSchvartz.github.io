@@ -37,8 +37,8 @@ export const viewport: Viewport = {
   ],
 };
 
-// Runs before paint: restores the saved accent and enables reveal styles only when JS is on.
-const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{var a=localStorage.getItem('accent');if(a)d.dataset.accent=a}catch(e){}})()`;
+// Runs before paint so reveal styles only apply when JS is on.
+const boot = `document.documentElement.classList.add('js')`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
