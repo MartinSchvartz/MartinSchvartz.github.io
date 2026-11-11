@@ -4,14 +4,15 @@ Context for AI coding agents working in this repo. Read this first. Keep it up t
 
 ## What this is
 
-Martin Schvartz's personal portfolio site, live at https://martinschvartz.github.io. The audience is recruiters and people in tech.
+Martin Schvartz's personal portfolio site, live at https://martinschvartz.com. The audience is recruiters and people in tech.
 
 One page (`/`): hero with the big name and photo, stats row, "used at" names, Selected work (FORM, then Mercado Libre projects with drawn thumbnails), What I work on, Experience timeline, Contact band.
 
 ## Stack and deploy
 
 - Next.js (App Router) + TypeScript with static export (`output: "export"`). CSS modules plus `app/globals.css`. No UI libraries.
-- **Deploy:** every push to `main` runs `.github/workflows/deploy.yml`, which builds `out/` and deploys to GitHub Pages (Pages source: GitHub Actions).
+- **Deploy:** hosted on Cloudflare Workers (static assets). Workers Builds is connected to the GitHub repo: every push to `main` runs `npm run build` then `npx wrangler deploy`, which uploads `out/` (config in `wrangler.jsonc`; the `name` must match the Worker in the dashboard, `martinschvartz-github-io`). Custom domain `martinschvartz.com`, bought on Cloudflare Registrar.
+- **Old URL:** `.github/workflows/deploy.yml` still deploys to GitHub Pages, but only `github-pages/` (a redirect page served as `index.html` and `404.html`), so `martinschvartz.github.io/...` forwards to `martinschvartz.com/...`.
 
 ## Commands
 

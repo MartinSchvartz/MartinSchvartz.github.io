@@ -17,7 +17,8 @@ const mono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://martinschvartz.github.io"),
+  metadataBase: new URL("https://martinschvartz.com"),
+  alternates: { canonical: "/" },
   title: "Martin Schvartz · Senior Software Engineer",
   description:
     "Senior software engineer in Buenos Aires with 8+ years building products end to end: Mercado Libre, FORM, Go, React and AI agents.",

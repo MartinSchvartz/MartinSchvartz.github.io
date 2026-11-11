@@ -1,4 +1,6 @@
-name: Deploy to GitHub Pages
+# The site is hosted on Cloudflare (see wrangler.jsonc). GitHub Pages only serves a
+# redirect from martinschvartz.github.io to martinschvartz.com, so old links keep working.
+name: Deploy GitHub Pages redirect
 
 on:
   push:
@@ -19,15 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: out
+          path: github-pages
 
   deploy:
     needs: build

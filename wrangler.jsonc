@@ -1,6 +1,6 @@
 // Cloudflare Workers config: serves the static export in out/ (built by `npm run build`).
 {
-  "name": "martinschvartz",
+  "name": "martinschvartz-github-io",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./out",
