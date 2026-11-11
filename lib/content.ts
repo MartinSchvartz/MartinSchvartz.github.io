@@ -2,7 +2,7 @@ export const profile = {
   name: "Martin Schvartz",
   role: "Senior Software Engineer",
   location: "Buenos Aires, Argentina",
-  email: "martinschvartz@gmail.com",
+  email: "hi@martinschvartz.com",
   links: {
     github: "https://github.com/MartinSchvartz",
     linkedin: "https://www.linkedin.com/in/martinschvartz",

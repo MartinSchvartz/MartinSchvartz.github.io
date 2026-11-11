@@ -13,6 +13,7 @@ One page (`/`): hero with the big name and photo, stats row, "used at" names, Se
 - Next.js (App Router) + TypeScript with static export (`output: "export"`). CSS modules plus `app/globals.css`. No UI libraries.
 - **Deploy:** hosted on Cloudflare Workers (static assets). Workers Builds is connected to the GitHub repo: every push to `main` runs `npm run build` then `npx wrangler deploy`, which uploads `out/` (config in `wrangler.jsonc`; the `name` must match the Worker in the dashboard, `martinschvartz-github-io`). Custom domain `martinschvartz.com`, bought on Cloudflare Registrar.
 - **Old URL:** `.github/workflows/deploy.yml` still deploys to GitHub Pages, but only `github-pages/` (a redirect page served as `index.html` and `404.html`), so `martinschvartz.github.io/...` forwards to `martinschvartz.com/...`.
+- **Email:** the site shows `hi@martinschvartz.com`. Cloudflare Email Routing forwards it to Martin's Gmail (receive only; catch-all is off).
 
 ## Commands
 
