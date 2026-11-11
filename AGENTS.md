@@ -43,7 +43,7 @@ Always run `npm run build` and fix errors before committing.
 - Must **not** look AI-generated: no gradients, no glassmorphism, no glow effects, no emoji icons, no big gradient hero text.
 - Typographic: Geist for everything (bold, tight tracking on headings), Geist Mono for small labels. Warm off-white background (`#f5f4f0`), black accent with warm gray (`#8c8a84`) as the second tone, solid gray and black bands (no gradients). Color comes from the brand-colored project thumbnails. Martin rejected Newsreader/IBM Plex and the cobalt accent. The name is set very large in the hero so recruiters remember it.
 - Light only (Martin didn't like the black dark mode). Fully responsive (check 375px wide), accessible (focus rings, AA contrast, labels).
-- **Motion:** every animation must reveal content, show state, or reward exploration. Only animate `transform` and `opacity`. Reveals under 400ms, run once. Respect `prefers-reduced-motion`.
+- **Motion:** every animation must reveal content, show state, or reward exploration. Only animate `transform` and `opacity`. Scroll reveals: 24px rise, 600ms fade / 800ms move on `--ease-reveal` (Martin found shorter ones "popped"), staggered 90ms, run once. Respect `prefers-reduced-motion`.
 - **Copy:** plain, direct, first person. No buzzwords. Talk about what Martin builds and how, not a list of employers (those are on LinkedIn).
 
 ## Decisions already made (don't re-ask)

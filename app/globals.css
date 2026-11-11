@@ -18,6 +18,8 @@
   --wide: 72rem;
   --gutter: clamp(1rem, 4vw, 2rem);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* Decelerating curve for scroll reveals: quick start, long soft landing. */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
 
   color-scheme: light;
 }
@@ -116,11 +118,11 @@ a {
 /* Scroll reveals. Only hidden when JS is running, so content never gets stuck invisible. */
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(24px);
   transition:
-    opacity 350ms var(--ease),
-    transform 350ms var(--ease);
-  transition-delay: calc(var(--i, 0) * 40ms);
+    opacity 600ms var(--ease-reveal),
+    transform 800ms var(--ease-reveal);
+  transition-delay: calc(var(--i, 0) * 90ms);
 }
 .js [data-reveal].is-visible {
   opacity: 1;

@@ -99,7 +99,9 @@ export default function Home() {
             </div>
 
             <CompanyBlock company={form}>
-              <ProjectCard project={form.projects[0]} wide />
+              <div data-reveal>
+                <ProjectCard project={form.projects[0]} wide />
+              </div>
             </CompanyBlock>
 
             <CompanyBlock company={meli}>
@@ -215,7 +217,7 @@ function CompanyBlock({ company, children }: { company: Company; children: React
 
 function ProjectCard({ project, wide = false }: { project: Project; wide?: boolean }) {
   return (
-    <article className={`${styles.card} ${wide ? styles.cardWide : ""}`} data-reveal={wide || undefined}>
+    <article className={`${styles.card} ${wide ? styles.cardWide : ""}`}>
       <div className={styles.cardThumb}>
         <Thumb id={project.thumb} />
       </div>
